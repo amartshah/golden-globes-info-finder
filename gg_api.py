@@ -30,7 +30,7 @@ def get_winners(year):
     '''Winners is a dictionary with the hard coded award
     names as keys, and each entry containing a single string.
     Do NOT change the name of this function or what it returns.'''
-    # Liam (after we have nominees)
+    # Liam
     # Your code here
     return winners
 
@@ -47,7 +47,8 @@ def pre_ceremony():
     will use, and stores that data in your DB or in a json, csv, or
     plain text file. It is the first thing the TA will run when grading.
     Do NOT change the name of this function or what it returns.'''
-    # Your code here
+    # Databse populator, etc.
+    # Add in stuff that should be here as needed
     print "Pre-ceremony processing complete."
     return
 

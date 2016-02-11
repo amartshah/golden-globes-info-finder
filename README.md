@@ -18,5 +18,13 @@ Tweet Format
 {text: , user: {screen_name: , id: }, id: , timestamp_ms: }
 
 
+Database
+========
 
 
+
+People's Jobs
+=============
+
+Look at commments in gg_api file
+Flask + index.html -> Liam
