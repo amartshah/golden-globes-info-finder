@@ -4,7 +4,6 @@
 import official_awards
 
 
-
 def get_hosts(year):
     '''Hosts is a list of one or more strings. Do NOT change the name
     of this function or what it returns.'''
