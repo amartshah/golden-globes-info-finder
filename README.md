@@ -22,9 +22,14 @@ Database
 ========
 
 
-
 People's Jobs
 =============
 
 Look at commments in gg_api file
 Flask + index.html -> Liam
+
+
+Due Date
+========
+
+Mon. February 22nd
