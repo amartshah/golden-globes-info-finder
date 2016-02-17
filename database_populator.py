@@ -15,5 +15,11 @@ def pop_collection():
     data = json.loads(json_data)
     DB.tweets.insert(data)
 
+def pop_collection_2k15():
+    drop_collection()
+    json_data = open('./gg/gg2015.json').read()
+    data = json.loads(json_data)
+    DB.tweets.insert(data)
+
 def hello_database():
     print DB.tweets.find_one()
