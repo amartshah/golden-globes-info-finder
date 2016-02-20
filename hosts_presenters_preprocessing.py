@@ -15,11 +15,6 @@ stopwords = nltk.corpus.stopwords.words('english') + punctuation_stopword
 
 
 def loadParsedTweets(filename):
-    stupidwords = [];
-    """
-    Takes a json file name and extracts a list of tweets. The tweets are then
-    tokenized and a list of parsed tweets is returned.
-    """
     try:
         with open(filename) as fl:
             jsonObj = json.load(fl)
