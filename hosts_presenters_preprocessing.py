@@ -22,7 +22,7 @@ def loadParsedTweets(filename):
     except (MemoryError, ValueError):
         with open(filename) as fl:
             tweets = [json.loads(line)["text"] for line in fl]
-    parsedTweets = [nltk.wordpunct_tokenize(tweet) for tweet in tweets]    
+    parsedTweets = [nltk.wordpunct_tokenize(tweet) for tweet in tweets]
     for tweet in parsedTweets:
         for token in tweet:
             if token in stopwords:
@@ -32,9 +32,9 @@ def loadParsedTweets(filename):
 
 def lookthroughTweets(keywords, year):
     if str(year) == '2015':
-        filename = 'gg2015.json'
+        filename = 'gg/gg2015.json'
     else:
-        filename = 'gg2013.json'
+        filename = 'gg/gg2013.json'
     parsedTweets = loadParsedTweets(filename)
     fTweets = [tweet for tweet in parsedTweets if any(x in tweet for x in keywords)]
     #print fTweets
@@ -94,7 +94,7 @@ def getHosts(year):
 
     output = []
     for host in hosts:
-        h_final = host.encode("utf-8") 
+        h_final = host.encode("utf-8")
         output.append(h_final)
     hosts = output
     print hosts
@@ -107,7 +107,7 @@ def getHumor(year):
     comedians = ObtainNames(wordDict, nameList, 1)
     output = []
     for comedian in comedians:
-        c_final = comedian.encode("utf-8") 
+        c_final = comedian.encode("utf-8")
         output.append(c_final)
     comedians = output
     #comedians.replace("Show ", "")
@@ -122,7 +122,7 @@ def getPresenters(year):
         #presenters_keywords.append(winners[w])
         #presentersTweets = lookthroughTweets(presenters_keywords)
         test = winners[w].split()
-        #print test 
+        #print test
         specificTweets = lookthroughTweets2(presentersTweets, test)
         #print specificTweets
         for t in test:
@@ -133,7 +133,7 @@ def getPresenters(year):
         presentersper = ObtainNames(wordDict, nameList, 4)
         output = []
         for presenter in presentersper:
-            presenters_final = presenter.encode("utf-8") 
+            presenters_final = presenter.encode("utf-8")
             output.append(presenters_final)
             presentersper = output
         presentersper = output

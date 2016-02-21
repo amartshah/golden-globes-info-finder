@@ -5,10 +5,7 @@ import official_awards
 from awards import award_names
 from noms import find_noms
 from database_populator import *
-import hosts_presenters_preprocessing
-from hosts_presenters_preprocessing import getPresenters
-from hosts_presenters_preprocessing import getHosts
-from hosts_presenters_preprocessing import getHumor
+from hosts_presenters_preprocessing import getHosts, getHumor, getPresenters
 
 def get_hosts(year):
     '''Hosts is a list of one or more strings. Do NOT change the name
@@ -48,6 +45,9 @@ def get_presenters(year):
     presenters = getPresenters(year)
     return presenters
 
+def get_humor(year):
+    return getHumor(year)
+
 def pre_ceremony():
     '''This function loads/fetches/processes any data your program
     will use, and stores that data in your DB or in a json, csv, or
@@ -80,11 +80,11 @@ def main():
             print "From which year do you want info?"
             yr = raw_input('Year: ')
 
-        while not inp_letter in ['a', 'b', 'c', 'd', 'e']:
+        while not inp_letter in ['a', 'b', 'c', 'd', 'e', 'f']:
             if inp_letter != None:
                 print "The character you entered was not understood - "
             print "What information do you want? (enter letter)"
-            print "a) hosts\nb) awards\nc) nominees\nd) winners\ne) presenters \n"
+            print "a) hosts\nb) awards\nc) nominees\nd) winners\ne) presenters \nf) funny people\n"
             inp_letter = raw_input('Letter: ')
 
         print "\nWorking...\n"
@@ -99,6 +99,8 @@ def main():
             print get_winners(yr)
         elif inp_letter == 'e':
             print get_presenters(yr)
+        elif inp_letter == 'f':
+            print get_humor(yr)
 
         print "====================================="
 
