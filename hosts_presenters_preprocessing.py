@@ -4,13 +4,13 @@ import operator
 import sys
 import re
 
-filename = sys.argv[-1]
-#OFFICIAL_AWARDS = ['cecil b. demille award', 'best motion picture - drama', 'best performance by an actress in a motion picture - drama', 'best performance by an actor in a motion picture - drama', 'best motion picture - comedy or musical', 'best performance by an actress in a motion picture - comedy or musical', 'best performance by an actor in a motion picture - comedy or musical', 'best animated feature film', 'best foreign language film', 'best performance by an actress in a supporting role in a motion picture', 'best performance by an actor in a supporting role in a motion picture', 'best director - motion picture', 'best screenplay - motion picture', 'best original score - motion picture', 'best original song - motion picture', 'best television series - drama', 'best performance by an actress in a television series - drama', 'best performance by an actor in a television series - drama', 'best television series - comedy or musical', 'best performance by an actress in a television series - comedy or musical', 'best performance by an actor in a television series - comedy or musical', 'best mini-series or motion picture made for television', 'best performance by an actress in a mini-series or motion picture made for television', 'best performance by an actor in a mini-series or motion picture made for television', 'best performance by an actress in a supporting role in a series, mini-series or motion picture made for television', 'best performance by an actor in a supporting role in a series, mini-series or motion picture made for television']
+#amar shah
 host_keywords = ["host", "hosting", "hosts", "hosted"]
 presenters_keywords = ["presenting", "presenters", "Presenters", "Presenting"]
 #accounts for other words as well
-punctuation_stopword = [".", '"', ",", "?", "!", "/", "'", "-", "_", ";", ":", "&", ',"', '",', ")", "(", "Golden", "Globes", "@", "GoldenGlobes", "I", "we", "http", "://", "/", "co"]
+punctuation_stopword = [".", '"', ",", "?", "!", "/", "'", "-", "_", ";", ":", "&", ',"', '",', ")", "(", "Golden", "Globes", "@", "GoldenGlobes", "I", "we", "http", "://", "/", "co", "Hollywood", "Hooray"]
 stopwords = nltk.corpus.stopwords.words('english') + punctuation_stopword
+humor_keywords = ["hilarious", "funny", "comedian", "best joke", "hysterical"]
 
 winners = {'cecil b. demille award' : 'Jodie Foster', 'best motion picture - drama' : 'Argo', 'best performance by an actress in a motion picture - drama' : 'Jessica Chastain', 'best performance by an actor in a motion picture - drama' : 'Daniel Day-Lewis', 'best motion picture - comedy or musical' : 'Les Miserables', 'best performance by an actress in a motion picture - comedy or musical' : 'Jennifer Lawrence', 'best performance by an actor in a motion picture - comedy or musical' : 'Hugh Jackman', 'best animated feature film' : 'Brave', 'best foreign language film' : 'Amour', 'best performance by an actress in a supporting role in a motion picture' : 'Anne Hathaway', 'best performance by an actor in a supporting role in a motion picture' : 'Christoph Waltz', 'best director - motion picture' : 'Ben Affleck', 'best screenplay - motion picture' : 'Quentin Tarantino', 'best original score - motion picture' : 'Mychael Danna', 'best original song - motion picture' : 'Skyfall', 'best television series - drama' : 'Homeland', 'best performance by an actress in a television series - drama' : 'Claire Danes', 'best performance by an actor in a television series - drama' : 'Damian Lewis', 'best television series - comedy or musical' : 'Girls', 'best performance by an actress in a television series - comedy or musical':'Lena Dunham', 'best performance by an actor in a television series - comedy or musical':'Don Cheadle', 'best mini-series or motion picture made for television':'Game Change', 'best performance by an actress in a mini-series or motion picture made for television':'Julianne Moore', 'best performance by an actor in a mini-series or motion picture made for television':'Kevin Costner', 'best performance by an actress in a supporting role in a series, mini-series or motion picture made for television': 'Maggie Smith', 'best performance by an actor in a supporting role in a series, mini-series or motion picture made for television': 'Ed Harris'}
 
@@ -30,7 +30,11 @@ def loadParsedTweets(filename):
     return parsedTweets
 
 
-def lookthroughTweets(keywords):
+def lookthroughTweets(keywords, year):
+    if str(year) == '2015':
+        filename = 'gg2015.json'
+    else:
+        filename = 'gg2013.json'
     parsedTweets = loadParsedTweets(filename)
     fTweets = [tweet for tweet in parsedTweets if any(x in tweet for x in keywords)]
     #print fTweets
@@ -40,17 +44,6 @@ def lookthroughTweets2(presentersTweets,test1):
     fTweets = [tweet for tweet in presentersTweets if any(x in tweet for x in test1)]
     #print fTweets
     return fTweets
-
-
-# def buildnamelist():
-#     tweets = lookthroughTweets(host_keywords,stopwords)
-#     namelist = []
-#     for tweet in tweets:
-#         tweetnames = re.findall('([A-Z][a-z]+(?:\s[A-Z][a-z]+)*)'," ".join(tweet))
-#         for name in tweetnames:
-#             if name not in namelist:
-#                 namelist.append(name)
-#     return namelist
 
 def CreateWords(tweets,stopwords):
     dictofwords = dict()
@@ -90,10 +83,11 @@ def ObtainNames(worddict,namedict,num):
                         counter = tnames[name] + twords[word]
                         dispName = name
         finalnames[dispName] = counter
+    #print finalnames
     return finalnames.keys()
 
-def getHosts():
-    hostTweets = lookthroughTweets(host_keywords)
+def getHosts(year):
+    hostTweets = lookthroughTweets(host_keywords, year)
     wordDict = CreateWords(hostTweets, stopwords)
     nameList = CreateNames(hostTweets, stopwords)
     hosts = ObtainNames(wordDict, nameList, 1)
@@ -106,10 +100,23 @@ def getHosts():
     print hosts
     return hosts
 
+def getHumor(year):
+    humorTweets = lookthroughTweets(humor_keywords, year)
+    wordDict = CreateWords(humorTweets, stopwords)
+    nameList = CreateNames(humorTweets, stopwords)
+    comedians = ObtainNames(wordDict, nameList, 1)
+    output = []
+    for comedian in comedians:
+        c_final = comedian.encode("utf-8") 
+        output.append(c_final)
+    comedians = output
+    #comedians.replace("Show ", "")
+    print comedians[0]
+    return comedians
 
-def getPresenters(presenters_keywords, stopwords):
+def getPresenters(year):
     presenters = dict()
-    presentersTweets = lookthroughTweets(presenters_keywords)
+    presentersTweets = lookthroughTweets(presenters_keywords, year)
     for w in winners:
         test = []
         #presenters_keywords.append(winners[w])
@@ -123,7 +130,7 @@ def getPresenters(presenters_keywords, stopwords):
         #print stopwords
         wordDict = CreateWords(specificTweets, stopwords)
         nameList = CreateNames(specificTweets, stopwords)
-        presentersper = ObtainNames(wordDict, nameList, 2)
+        presentersper = ObtainNames(wordDict, nameList, 4)
         output = []
         for presenter in presentersper:
             presenters_final = presenter.encode("utf-8") 
@@ -138,60 +145,16 @@ def getPresenters(presenters_keywords, stopwords):
             stopwords.pop()
     print presenters
     return presenters
-getHosts()
-getPresenters(presenters_keywords, stopwords)
-def get_hosts(year):
-    '''Hosts is a list of one or more strings. Do NOT change the name
-    of this function or what it returns.'''
-    # Your code here
 
 
-    return hosts
 
-def get_awards(year):
-    '''Awards is a list of strings. Do NOT change the name
-    of this function or what it returns.'''
-    # Your code here
-    return awards
 
-def get_nominees(year):
-    '''Nominees is a dictionary with the hard coded award
-    names as keys, and each entry a list of strings. Do NOT change
-    the name of this function or what it returns.'''
-    # Your code here
-    return nominees
 
-def get_winner(year):
-    '''Winners is a dictionary with the hard coded award
-    names as keys, and each entry containing a single string.
-    Do NOT change the name of this function or what it returns.'''
-    # Your code here
-    return winners
 
-def get_presenters(year):
-    '''Presenters is a dictionary with the hard coded award
-    names as keys, and each entry a list of strings. Do NOT change the
-    name of this function or what it returns.'''
-    # Your code here
-    return presenters
+#getHosts("2013")
+#getPresenters("2013")
+#getHumor("2013")
 
-def pre_ceremony():
-    '''This function loads/fetches/processes any data your program
-    will use, and stores that data in your DB or in a json, csv, or
-    plain text file. It is the first thing the TA will run when grading.
-    Do NOT change the name of this function or what it returns.'''
-    # Your code here
-    print "Pre-ceremony processing complete."
-    return
-
-def main():
-    '''This function calls your program. Typing "python gg_api.py"
-    will run this function. Or, in the interpreter, import gg_api
-    and then run gg_api.main(). This is the second thing the TA will
-    run when grading. Do NOT change the name of this function or
-    what it returns.'''
-    # Your code here
-    return
 
 if __name__ == '__main__':
     main()
