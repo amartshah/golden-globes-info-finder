@@ -51,12 +51,12 @@ def delete_duplicate_names(awards):
 
     return [a for a, d in final_awards]
 
-def award_names():
+def award_names(year):
     best_re = re.compile('best ', re.IGNORECASE)
     trans_words = re.compile('\s(at|for|dressed|award|and|i\s|golden|http)', re.IGNORECASE)
 
     awards = []
-    for tweet in tweets_i_care_about():
+    for tweet in tweets_i_care_about(year):
         tweet_pieces = re.compile('[^\s\w-]').split(tweet['text'].replace('#',''))
         award_tweets = [x.lower() for x in tweet_pieces if 'wins best' in x or 'won best' in x]
         for award_piece in award_tweets:
@@ -73,4 +73,4 @@ def award_names():
     return ret
 
 
-# award_names()
+award_names(2015)

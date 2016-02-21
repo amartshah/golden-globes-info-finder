@@ -4,7 +4,7 @@
 import official_awards
 from awards import award_names
 from noms import find_noms
-from database_populator import pop_for_year
+from database_populator import *
 
 def get_hosts(year):
     '''Hosts is a list of one or more strings. Do NOT change the name
@@ -17,8 +17,7 @@ def get_awards(year):
     '''Awards is a list of strings. Do NOT change the name
     of this function or what it returns.'''
     # Collin
-    pop_for_year(year)
-    awards = award_names()
+    awards = award_names(year)
     return awards
 
 def get_nominees(year):
@@ -26,8 +25,7 @@ def get_nominees(year):
     names as keys, and each entry a list of strings. Do NOT change
     the name of this function or what it returns.'''
     # Collin
-    pop_for_year(year)
-    nominees = find_noms()
+    nominees = find_noms(year)
     return nominees
 
 def get_winners(year):
@@ -53,6 +51,8 @@ def pre_ceremony():
     Do NOT change the name of this function or what it returns.'''
     # Databse populator, etc.
     # Add in stuff that should be here as needed
+    pop_collection_2k13()
+    pop_collection_2k15()
     print "Pre-ceremony processing complete."
     return
 
@@ -62,7 +62,8 @@ def main():
     and then run gg_api.main(). This is the second thing the TA will
     run when grading. Do NOT change the name of this function or
     what it returns.'''
-    # Your code here
+    pre_ceremony()
+
     return
 
 if __name__ == '__main__':

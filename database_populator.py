@@ -6,30 +6,22 @@ import re
 CLIENT = MongoClient()
 DB = CLIENT.test_database
 
-def drop_collection():
-    DB.drop_collection('tweets')
-
-def pop_collection():
-    drop_collection()
+def pop_collection_2k13():
+    DB.drop_collection('tweets2k13')
     json_data = open('./gg/gg2013.json').read()
     data = json.loads(json_data)
-    DB.tweets.insert(data)
+    DB.tweets2k13.insert(data)
 
 def pop_collection_2k15():
-    drop_collection()
+    DB.drop_collection('tweets2k15')
     json_data = open('./gg/gg2015.json').read()
     data = json.loads(json_data)
-    DB.tweets.insert(data)
+    DB.tweets2k15.insert(data)
 
-def pop_for_year(year):
+def tweets_i_care_about(year):
     if str(year) == '2013':
-        pop_collection()
+        DB.tweets2k13.ensure_index([('timestamp_ms', pymongo.ASCENDING)])
+        return DB.tweets2k13.find({ 'text': { '$not': re.compile('\ART @') } }).sort('timestamp_ms',pymongo.ASCENDING)
     else:
-        pop_collection_2k15()
-
-def tweets_i_care_about():
-    DB.tweets.ensure_index([('timestamp_ms', pymongo.ASCENDING)])
-    return DB.tweets.find({ 'text': { '$not': re.compile('\ART @') } }).sort('timestamp_ms',pymongo.ASCENDING)
-
-def hello_database():
-    print DB.tweets.find_one()
+        DB.tweets2k15.ensure_index([('timestamp_ms', pymongo.ASCENDING)])
+        return DB.tweets2k15.find({ 'text': { '$not': re.compile('\ART @') } }).sort('timestamp_ms',pymongo.ASCENDING)

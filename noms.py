@@ -46,12 +46,12 @@ def trim_nom_dict(d):
                 noms[nom] = 0
     return d
 
-# ideas
+ # ideas
 # nominees: won () over ____; wins () over ____; ___ should have won
 
 # need to use regexes for actor/actress awards
 
-def find_noms():
+def find_noms(year):
     current_award = None
     simple_official_awards = get_simple_official_awards()
 
@@ -60,7 +60,7 @@ def find_noms():
     for k, v in simple_official_awards.iteritems():
         verified_noms[k] = defaultdict(lambda: 0)
 
-    for tweet in tweets_i_care_about():
+    for tweet in tweets_i_care_about(year):
         autoverified = False
         lc_tw = tweet['text'].lower()
         puncless_tw = remove_punc(lc_tw)
@@ -107,4 +107,4 @@ def find_noms():
     return final_dict
 
 
-find_noms()
+find_noms(2015)
