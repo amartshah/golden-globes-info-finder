@@ -41,7 +41,6 @@ def get_presenters(year):
     names as keys, and each entry a list of strings. Do NOT change the
     name of this function or what it returns.'''
     # Amar
-    # Your code here
     return presenters
 
 def pre_ceremony():
@@ -51,8 +50,10 @@ def pre_ceremony():
     Do NOT change the name of this function or what it returns.'''
     # Databse populator, etc.
     # Add in stuff that should be here as needed
-    pop_collection_2k13()
-    pop_collection_2k15()
+    print "Populating database..."
+    pop_if_not_populated()
+    # pop_collection_2k13()
+    # pop_collection_2k15()
     print "Pre-ceremony processing complete."
     return
 
@@ -64,7 +65,37 @@ def main():
     what it returns.'''
     pre_ceremony()
 
-    return
+    while True:
+        yr = None
+        inp_letter = None
+
+        while not (yr == '2015' or yr == '2013'):
+            if yr != None:
+                print "The year you entered was not understood - "
+            print "From which year do you want info?"
+            yr = str(input('Year: '))
+
+        while not inp_letter in ['a', 'b', 'c', 'd', 'e']:
+            if inp_letter != None:
+                print "The character you entered was not understood - "
+            print "What information do you want? (enter letter)"
+            print "a) hosts\nb) awards\nc) nominees\nd) winners\ne) presenters \n"
+            inp_letter = str(input('Letter: '))
+
+        print "\n"
+
+        if inp_letter == 'a':
+            print get_hosts(yr)
+        elif inp_letter == 'b':
+            print get_awards(yr)
+        elif inp_letter == 'c':
+            print get_nominees(yr)
+        elif inp_letter == 'd':
+            print get_winners(yr)
+        elif inp_letter == 'e':
+            print get_presenters(yr)
+
+        print "\n"
 
 if __name__ == '__main__':
     main()

@@ -107,4 +107,4 @@ def find_noms(year):
     return final_dict
 
 
-find_noms(2015)
+# find_noms(2015)

@@ -18,6 +18,12 @@ def pop_collection_2k15():
     data = json.loads(json_data)
     DB.tweets2k15.insert(data)
 
+def pop_if_not_populated():
+    if DB.tweets2k15.count() < 100:
+        pop_collection_2k15()
+    if DB.tweets2k13.count() < 100:
+        pop_collection_2k13()
+
 def tweets_i_care_about(year):
     if str(year) == '2013':
         DB.tweets2k13.ensure_index([('timestamp_ms', pymongo.ASCENDING)])
