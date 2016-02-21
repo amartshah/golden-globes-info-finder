@@ -73,16 +73,16 @@ def main():
             if yr != None:
                 print "The year you entered was not understood - "
             print "From which year do you want info?"
-            yr = str(input('Year: '))
+            yr = raw_input('Year: ')
 
         while not inp_letter in ['a', 'b', 'c', 'd', 'e']:
             if inp_letter != None:
                 print "The character you entered was not understood - "
             print "What information do you want? (enter letter)"
             print "a) hosts\nb) awards\nc) nominees\nd) winners\ne) presenters \n"
-            inp_letter = str(input('Letter: '))
+            inp_letter = raw_input('Letter: ')
 
-        print "\n"
+        print "\nWorking...\n"
 
         if inp_letter == 'a':
             print get_hosts(yr)
@@ -95,7 +95,8 @@ def main():
         elif inp_letter == 'e':
             print get_presenters(yr)
 
-        print "\n"
+        print "====================================="
+
 
 if __name__ == '__main__':
     main()
