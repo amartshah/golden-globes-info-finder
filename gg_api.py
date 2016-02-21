@@ -5,12 +5,16 @@ import official_awards
 from awards import award_names
 from noms import find_noms
 from database_populator import *
+import hosts_presenters_preprocessing
+from hosts_presenters_preprocessing import getPresenters
+from hosts_presenters_preprocessing import getHosts
+from hosts_presenters_preprocessing import getHumor
 
 def get_hosts(year):
     '''Hosts is a list of one or more strings. Do NOT change the name
     of this function or what it returns.'''
     # Amar
-    # Your code here
+    hosts = getHosts(year)
     return hosts
 
 def get_awards(year):
@@ -41,6 +45,7 @@ def get_presenters(year):
     names as keys, and each entry a list of strings. Do NOT change the
     name of this function or what it returns.'''
     # Amar
+    presenters = getPresenters(year)
     return presenters
 
 def pre_ceremony():
