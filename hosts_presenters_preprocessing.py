@@ -41,6 +41,17 @@ def lookthroughTweets2(presentersTweets,test1):
     #print fTweets
     return fTweets
 
+
+# def buildnamelist():
+#     tweets = lookthroughTweets(host_keywords,stopwords)
+#     namelist = []
+#     for tweet in tweets:
+#         tweetnames = re.findall('([A-Z][a-z]+(?:\s[A-Z][a-z]+)*)'," ".join(tweet))
+#         for name in tweetnames:
+#             if name not in namelist:
+#                 namelist.append(name)
+#     return namelist
+
 def CreateWords(tweets,stopwords):
     dictofwords = dict()
     for tweet in tweets:
@@ -86,15 +97,23 @@ def getHosts():
     wordDict = CreateWords(hostTweets, stopwords)
     nameList = CreateNames(hostTweets, stopwords)
     hosts = ObtainNames(wordDict, nameList, 1)
+
+    output = []
+    for host in hosts:
+        h_final = host.encode("utf-8") 
+        output.append(h_final)
+    hosts = output
+    print hosts
     return hosts
 
 
 def getPresenters(presenters_keywords, stopwords):
     presenters = dict()
+    presentersTweets = lookthroughTweets(presenters_keywords)
     for w in winners:
         test = []
         #presenters_keywords.append(winners[w])
-        presentersTweets = lookthroughTweets(presenters_keywords)
+        #presentersTweets = lookthroughTweets(presenters_keywords)
         test = winners[w].split()
         #print test 
         specificTweets = lookthroughTweets2(presentersTweets, test)
@@ -105,14 +124,20 @@ def getPresenters(presenters_keywords, stopwords):
         wordDict = CreateWords(specificTweets, stopwords)
         nameList = CreateNames(specificTweets, stopwords)
         presentersper = ObtainNames(wordDict, nameList, 2)
+        output = []
+        for presenter in presentersper:
+            presenters_final = presenter.encode("utf-8") 
+            output.append(presenters_final)
+            presentersper = output
+        presentersper = output
         presenters[w] = presentersper
-        print presentersper
+        #print presentersper
         #presenters.key() = winners.key()
         pop_amount = len(test)
         for x in range(0, pop_amount):
             stopwords.pop()
+    print presenters
     return presenters
-
 getHosts()
 getPresenters(presenters_keywords, stopwords)
 def get_hosts(year):
