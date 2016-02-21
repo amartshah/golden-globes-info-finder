@@ -2,7 +2,9 @@
 # function in the function below
 
 import official_awards
-
+from awards import award_names
+from noms import find_noms
+from database_populator import pop_for_year
 
 def get_hosts(year):
     '''Hosts is a list of one or more strings. Do NOT change the name
@@ -15,7 +17,8 @@ def get_awards(year):
     '''Awards is a list of strings. Do NOT change the name
     of this function or what it returns.'''
     # Collin
-    # Your code here
+    pop_for_year(year)
+    awards = award_names()
     return awards
 
 def get_nominees(year):
@@ -23,7 +26,8 @@ def get_nominees(year):
     names as keys, and each entry a list of strings. Do NOT change
     the name of this function or what it returns.'''
     # Collin
-    # Your code here
+    pop_for_year(year)
+    nominees = find_noms()
     return nominees
 
 def get_winners(year):

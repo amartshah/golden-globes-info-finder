@@ -1,21 +1,9 @@
-import nltk
-from nltk.tokenize import RegexpTokenizer
-from database_populator import DB
 import re
+from database_populator import tweets_i_care_about
 from official_awards import OFFICIAL_AWARDS
-import string
-import collections
 from collections import defaultdict
-import pymongo
+import collections
 
-AWARDS_THRESH = 3
-
-# ideas
-# nominees: won () over ____; wins () over ____; ___ should have won
-
-def tweets_i_care_about():
-    DB.tweets.ensure_index([('timestamp_ms', pymongo.ASCENDING)])
-    return DB.tweets.find({ 'text': { '$not': re.compile('\ART @') } }).sort('timestamp_ms',pymongo.ASCENDING)
 
 def remove_punc(st):
     not_punct_re = re.compile('\w|\s')
@@ -29,8 +17,18 @@ def add_count_to_dict(arr, d, current_award):
         d[current_award][x.strip()] += 1
     return d
 
-def capitalized(str):
-    return not not re.compile('\A[A-Z]').match(str)
+def capitalized(stri):
+    return not not re.compile('\A[A-Z]').match(stri)
+
+def is_mostly_capitalized(stri):
+    R = re.compile(r'(\A|\s)[A-Z]\w')
+    num_caps = len(re.findall(R, stri))
+    r = re.compile(r'(\A|\s)[a-z]\w')
+    num_lower = len(re.findall(r, stri))
+    if num_caps > num_lower:
+        return True
+    else:
+        return False
 
 def trim_nom_dict(d):
     ignore_these = [',', '&amp;', 'and']
@@ -40,13 +38,20 @@ def trim_nom_dict(d):
             if nom in ignore_these:
                 noms[nom] = 0
                 removed += 1
-        ## False negs or pos?
-        # if len(noms) - removed <= 4:
-        #     continue
-        # for nom, count in noms.iteritems():
-        #     if noms[nom] < 1:
-        #         noms[nom] = 0
+        # False negs or pos?
+        if len(noms) - removed <= 4:
+            continue
+        for nom, count in noms.iteritems():
+            if noms[nom] < 1:
+                noms[nom] = 0
     return d
+
+
+
+# ideas
+# nominees: won () over ____; wins () over ____; ___ should have won
+
+# need to use regexes for actor/actress awards
 
 def find_noms():
     current_award = None
@@ -89,32 +94,17 @@ def find_noms():
                 unverified_noms_for_current_award = []
 
     verified_noms = trim_nom_dict(verified_noms)
+    final_dict = {}
     for k, v in verified_noms.iteritems():
+        final_noms = []
         print k
         for nom, count in v.iteritems():
-            if count > 0 and capitalized(nom):
+            if count > 0 and capitalized(nom) and is_mostly_capitalized(nom):
                 print '-> -> ' + nom
+                final_noms.append(nom)
+        final_dict[k] = final_noms
+
+    return final_dict
 
 
-def award_names():
-    # use timestamps
-    best_re = re.compile('best ', re.IGNORECASE)
-    trans_words = re.compile('\s(at|for|dressed|award|and|i\s|golden|http)', re.IGNORECASE)
-
-    awards = []
-    for tweet in tweets_i_care_about():
-        tweet_pieces = re.compile('[^\s\w-]').split(tweet['text'].replace('#',''))
-        award_tweets = [x.lower() for x in tweet_pieces if 'wins best' in x or 'won best' in x]
-        for award_piece in award_tweets:
-            award_name = 'best ' + best_re.split(award_piece)[-1].rstrip()
-            awards.append(trans_words.split(award_name)[0])
-
-    thresh = max(AWARDS_THRESH, len(awards)/400)
-    fake_awards = ['best', 'best dressed', 'best speech', 'best act']
-    awardCounter = collections.Counter(awards).iteritems()
-    print [[k,v] for k, v in awardCounter if v >= thresh and k not in fake_awards]
-
-
-
-# award_names()
 find_noms()
