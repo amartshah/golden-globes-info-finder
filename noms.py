@@ -46,8 +46,6 @@ def trim_nom_dict(d):
                 noms[nom] = 0
     return d
 
-
-
 # ideas
 # nominees: won () over ____; wins () over ____; ___ should have won
 
@@ -58,7 +56,9 @@ def find_noms():
     simple_official_awards = get_simple_official_awards()
 
     unverified_noms_for_current_award = []
-    verified_noms = defaultdict(lambda: defaultdict(lambda: 0))
+    verified_noms = {}
+    for k, v in simple_official_awards.iteritems():
+        verified_noms[k] = defaultdict(lambda: 0)
 
     for tweet in tweets_i_care_about():
         autoverified = False
