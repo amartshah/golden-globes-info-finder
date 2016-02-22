@@ -85,7 +85,7 @@ def main():
             if inp_letter != None:
                 print "The character you entered was not understood - "
             print "What information do you want? (enter letter)"
-            print "a) hosts\nb) awards\nc) nominees\nd) winners\ne) presenters \nf) funny people\n"
+            print "a) hosts\nb) awards\nc) nominees\nd) winners\ne) presenters \nf) funny people\ng) best dressed\nh) music acts\n"
             inp_letter = raw_input('Letter: ')
 
         print "\nWorking...\n"
