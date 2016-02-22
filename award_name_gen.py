@@ -13,6 +13,10 @@ def award_name_gen(name):
                 for sub in sims:
                     if sub == word:
                         continue
-                    names_genned.append(name.replace(sub))
+                    names_genned.append(name.replace(word, sub))
 
     return names_genned
+
+
+
+# if len([x for x in award_name_gen(name) if x in tweet]) > 0: # then it is contained in tweet
