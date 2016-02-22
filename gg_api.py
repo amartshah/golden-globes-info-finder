@@ -6,6 +6,7 @@ from awards import award_names
 from noms import find_noms
 from database_populator import *
 from hosts_presenters_preprocessing import getHosts, getHumor, getPresenters
+from funtasks import *
 
 def get_hosts(year):
     '''Hosts is a list of one or more strings. Do NOT change the name
