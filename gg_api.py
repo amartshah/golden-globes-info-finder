@@ -81,7 +81,7 @@ def main():
             print "From which year do you want info?"
             yr = raw_input('Year: ')
 
-        while not inp_letter in ['a', 'b', 'c', 'd', 'e', 'f', 'g']:
+        while not inp_letter in ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']:
             if inp_letter != None:
                 print "The character you entered was not understood - "
             print "What information do you want? (enter letter)"
