@@ -4,6 +4,7 @@
 import official_awards
 from awards import award_names
 from noms import find_noms
+from winners import find_winners
 from database_populator import *
 from hosts_presenters_preprocessing import getHosts, getHumor, getPresenters
 
@@ -29,12 +30,13 @@ def get_nominees(year):
     nominees = find_noms(year)
     return nominees
 
-def get_winners(year):
+def get_winner(year):
     '''Winners is a dictionary with the hard coded award
     names as keys, and each entry containing a single string.
     Do NOT change the name of this function or what it returns.'''
     # Liam
     # Your code here
+    winners = find_winners(year)
     return winners
 
 def get_presenters(year):
@@ -68,7 +70,7 @@ def main():
     and then run gg_api.main(). This is the second thing the TA will
     run when grading. Do NOT change the name of this function or
     what it returns.'''
-    pre_ceremony()
+    pre_ceremony() 
 
     while True:
         yr = None
@@ -96,7 +98,7 @@ def main():
         elif inp_letter == 'c':
             print get_nominees(yr)
         elif inp_letter == 'd':
-            print get_winners(yr)
+            print get_winner(yr)
         elif inp_letter == 'e':
             print get_presenters(yr)
         elif inp_letter == 'f':
