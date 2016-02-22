@@ -80,7 +80,7 @@ def main():
             print "From which year do you want info?"
             yr = raw_input('Year: ')
 
-        while not inp_letter in ['a', 'b', 'c', 'd', 'e', 'f']:
+        while not inp_letter in ['a', 'b', 'c', 'd', 'e', 'f', 'g']:
             if inp_letter != None:
                 print "The character you entered was not understood - "
             print "What information do you want? (enter letter)"
@@ -101,6 +101,10 @@ def main():
             print get_presenters(yr)
         elif inp_letter == 'f':
             print get_humor(yr)
+        elif inp_letter == 'g':
+            print redCarpet(yr)
+        elif inp_letter == 'h':
+            print musicActs(yr)
 
         print "====================================="
 
