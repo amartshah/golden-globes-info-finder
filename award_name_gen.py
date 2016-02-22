@@ -1,6 +1,6 @@
 sim_lists = [
-    ['film', 'picture', 'motion picture', 'movie'],
-    ['tv-series', 'tv series', 'tv', 'series', 'miniseries', 'mini-series'],
+    ['film', 'motion picture', 'movie', 'picture'],
+    ['tv-series', 'tv series', 'miniseries', 'mini-series', 'tv', 'series'],
     ['musical or comedy', 'musical', 'comedy']
 ]
 
@@ -14,6 +14,7 @@ def award_name_gen(name):
                     if sub == word:
                         continue
                     names_genned.append(name.replace(word, sub))
+                break
 
     return names_genned
 
