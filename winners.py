@@ -13,9 +13,10 @@ sim_lists = [
     ['performance by an actress', 'actress'],
     ['performance by an actor', 'actor'],
     ['best performance by an actor in a miniseries or motion picture made for television', 'best actor in a mini series', 'best actor in a tv movie', 'best actor in a television movie', 'best actor in a tv mini series'],
-    ['best performance by an actress in a miniseries or motion picture made for television', 'best actress in a mini series', 'best actress in a tv movie', 'best actress in a television movie', 'best actress in a tv mini series'],
+    ['best performance by an actress in a miniseries or motion picture made for television', 'best actress in a miniseries', 'best actress in a tv movie', 'best actress in a television movie', 'best actress in a tv miniseries'],
     ['best performance by an actress in a television series  comedy or musical', 'best actress in a tv comedy', 'best actress in a tv musical', 'best actress in a comedy series', 'best actress in a musical series'],
-    ['best original score  motion picture', 'best score', 'best original score', 'best score in a feature film']
+    ['best original score  motion picture', 'best score', 'best original score', 'best score in a feature film'],
+    ['best performance by an actor in a supporting role in a series miniseries or motion picture made for television', 'best supporting actor in a miniseries','best supporting actor in a tv movie', 'best supporting actor in a television movie', 'best supporting actor in a tv miniseries']
 ]
 
 def award_name_gen(name):
