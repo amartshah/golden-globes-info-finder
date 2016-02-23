@@ -35,7 +35,7 @@ def loadParsedTweets(filename):
 ##    fTweets = [tweet for tweet in parsedTweets if any(x in tweet for x in keywords)]
 ##    return fTweets
 
-# github version
+## github version
 def lookthroughTweets(keywords, year):
     if str(year) == '2015':
         filename = 'gg/gg2015.json'
@@ -123,4 +123,5 @@ def musicActs(year):
     print music
     return music
 
-
+if __name__ == '__main__':
+    main()
