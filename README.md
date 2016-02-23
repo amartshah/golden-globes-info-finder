@@ -9,7 +9,7 @@ Other Stuff
 ===========
 
 import the official_awards file if you need the award names
-
+The nominees function has a many cases where it finds some but not all of the nominees, or where it has all the nominees but also includes some false positives.
 Put documentation in this file for starting the server etc. as you go
 We did not consult any past repos for this project and our project takes really long to run
 
