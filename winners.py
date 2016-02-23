@@ -12,6 +12,10 @@ sim_lists = [
     ['performance by an actor in a supporting role', 'supporting actor'],
     ['performance by an actress', 'actress'],
     ['performance by an actor', 'actor'],
+    ['best performance by an actor in a miniseries or motion picture made for television', 'best actor in a mini series', 'best actor in a tv movie', 'best actor in a television movie', 'best actor in a tv mini series'],
+    ['best performance by an actress in a miniseries or motion picture made for television', 'best actress in a mini series', 'best actress in a tv movie', 'best actress in a television movie', 'best actress in a tv mini series'],
+    ['best performance by an actress in a television series  comedy or musical', 'best actress in a tv comedy', 'best actress in a tv musical', 'best actress in a comedy series', 'best actress in a musical series'],
+    ['best original score  motion picture', 'best score', 'best original score', 'best score in a feature film']
 ]
 
 def award_name_gen(name):
@@ -53,7 +57,6 @@ def filter_false_positive(unfiltered_matches):
 def find_winners(year):
     current_award = None
     simple_official_awards = get_simple_official_awards()
-
     unverified_wins_current = []
     verified_wins = {}
     for k, v in simple_official_awards.iteritems():
@@ -71,10 +74,12 @@ def find_winners(year):
              autoverified = True
         else:
             for (real, simple) in simple_official_awards.iteritems():
+                #print simple
                 for x in award_name_gen(simple): 
                     if x in puncless_tw:
                         #print x
                         current_award = real
+                        verified_wins = add_count_to_dict(unverified_wins_current, verified_wins, current_award)                       
                         #print current_award
                         autoverified = True
                         unverified_wins_current = []
@@ -109,8 +114,7 @@ def find_winners(year):
             #     #winner_text = re.compile(r'winner', re.IGNORECASE).split(tw_without_presenters)[-1]
             #     winner_text = tw_without_presenters.encode('ascii', 'ignore')
             #     winner_text = re.sub(re.compile(r'#\w*'),'', winner_text)
-            proper_noun_regex = r'([A-Z]{1}[a-z]{1,}(\s[A-Z]{1}[a-z]{1,})?)'
-            prop = re.compile(proper_noun_regex)
+            prop = re.compile(r'([A-Z]{1}[a-z]{1,}(\s[A-Z]{1}[a-z]{1,})?)')
             matches = prop.findall(winner_text)
             #print matches, current_award
             matches = [i[0] for i in matches]
@@ -119,11 +123,11 @@ def find_winners(year):
             #if autoverified:
             #print current_award, matches
             wins = list(matches)
-            #print "matches:", wins
+            #print "matches:", wins, current_award
+            unverified_wins_current += wins
             #print wins
             #print wins
-            if autoverified:
-                unverified_wins_current += wins
+            if autoverified:   
                 verified_wins = add_count_to_dict(unverified_wins_current, verified_wins, current_award)
                 unverified_wins_current = []
 
