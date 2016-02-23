@@ -8,13 +8,13 @@ DB = CLIENT.test_database
 
 def pop_collection_2k13():
     DB.drop_collection('tweets2k13')
-    json_data = open('./gg/gg2013.json').read()
+    json_data = open('gg2013.json').read()
     data = json.loads(json_data)
     DB.tweets2k13.insert(data)
 
 def pop_collection_2k15():
     DB.drop_collection('tweets2k15')
-    json_data = open('./gg/gg2015.json').read()
+    json_data = open('gg2015.json').read()
     data = json.loads(json_data)
     DB.tweets2k15.insert(data)
 

@@ -14,13 +14,17 @@ def get_simple_official_awards():
 
 def add_count_to_dict(arr, d, current_award):
     for x in arr:
-        d[current_award][x.strip()] += 1
+        if d[current_award].get(x.strip()) is not None:
+            d[current_award][x.strip()] += 1
+        else:
+            d[current_award][x.strip()] = 1
     return d
 
 def capitalized(stri):
-    return not not re.compile('\A[A-Z]').match(stri)
+    return not not re.compile('\A[A-Z]').match(stri.strip())
 
 def is_mostly_capitalized(stri):
+    stri = stri.strip()
     R = re.compile(r'(\A|\s)[A-Z]\w')
     num_caps = len(re.findall(R, stri))
     r = re.compile(r'(\A|\s)[a-z]\w')
@@ -31,41 +35,31 @@ def is_mostly_capitalized(stri):
         return False
 
 def trim_nom_dict(d):
-    ignore_these = [',', '&amp;', 'and']
-    for a, noms in d.iteritems():
-        removed = 0
-        for nom, count in noms.iteritems():
-            if nom in ignore_these:
-                noms[nom] = 0
-                removed += 1
-
-        # False negs or pos?
-        # if len(noms) - removed <= 4:
-        #     # continue
-
-        for nom, count in noms.iteritems():
-            if noms[nom] < 2:
-                noms[nom] = 0
-    return d
+    ignore_these = [',', '&amp;', 'and', '']
+    new_dict = {}
+    for award, noms in d.iteritems():
+        # new_dict[award] = [x.strip().encode('ascii', 'ignore') for x, count in noms.iteritems()]
+        new_dict[award] = [x.strip() for x, count in noms.iteritems() if x.strip() not in ignore_these and count > 0 and capitalized(x) and is_mostly_capitalized(x)]
+    return new_dict
 
 # ideas
 # nominees: won () over ____; wins () over ____; ___ should have won
 # need to use regexes for actor/actress awards
 
 def find_noms(year):
-    lol_counter = 0
     current_award = None
     simple_official_awards = get_simple_official_awards()
 
     unverified_noms_for_current_award = []
     verified_noms = {}
     for k, v in simple_official_awards.iteritems():
-        verified_noms[k] = defaultdict(lambda: 0)
+        verified_noms[k] = {}
 
     for tweet in tweets_i_care_about(year):
         # code to associate with a specific award ###################
         autoverified = False
-        lc_tw = tweet['text'].lower()
+        tweet_text = tweet['text'].encode('ascii', 'ignore')
+        lc_tw = tweet_text.lower()
         puncless_tw = remove_punc(lc_tw)
 
         if current_award and simple_official_awards[current_award] in puncless_tw:
@@ -86,28 +80,28 @@ def find_noms(year):
 
 
         # salty people ###############################################
-
         # re.compile('i wish\s (had)?won)
-
-        shoulda_regex = re.compile('should have won', re.IGNORECASE)
-        if should_regex.match(tweet['text']):
-            subject_clause = shoulda_regex.split(tweet['text'])[0]
-            subject_clause.match('\Z'
-
-
         # if 'was better than ' + winner ....
-        # method using lists after 'nominees'
 
+        # shoulda_regex = re.compile('should have won', re.IGNORECASE)
+        # if re.search(shoulda_regex, lc_tw):
+        #     subject_clause = shoulda_regex.split(tweet_text)[0]
+        #     proper_noun_regex = re.compile('(([A-Z)]\w*\s?)+(\w*\s?)*)+\Z')
+        #     print '.'
+        #     mtch = re.search(proper_noun_regex, subject_clause)
+        #     print '.'
 
-
+        #     if not mtch:
+        #         unverified_noms_for_current_award.append(mtch.group(1))
+        #         print mtch.group(1)
 
         # nominees lists ##############################################
+        # method using lists after 'nominees'
 
-        presenter_regex = re.compile(r'(@\w*|[A-Z]\w*\s[A-Z]\w*)\s(present|introduce)')
-        tw_without_presenters = re.sub(presenter_regex, ' ', tweet['text'])
-
-        noms_regex = re.compile(r'(nominees:)|(nominees are)', re.IGNORECASE)
-        if noms_regex.match(tw_without_presenters):
+        presenter_regex = re.compile(r'(@\w*|[A-Z]\w*\s[A-Z]\w*)\s(present|introduce)s?')
+        tw_without_presenters = re.sub(presenter_regex, '', tweet_text)
+        noms_regex = re.compile(r'(nominees:\s)|(nominees are\s)', re.IGNORECASE)
+        if re.search(noms_regex, tw_without_presenters):
             nominees_text = noms_regex.split(tw_without_presenters)[-1]
             nominees_text = re.sub(re.compile(r'#\w*'),'', nominees_text)
             nominees_text = nominees_text.split('.')[0]
@@ -122,15 +116,9 @@ def find_noms(year):
 
     # post processing #################################################
     verified_noms = trim_nom_dict(verified_noms)
-    final_dict = {}
-    for k, v in verified_noms.iteritems():
-        final_noms = []
-        print k
-        for nom, count in v.iteritems():
-            if count > 0 and capitalized(nom) and is_mostly_capitalized(nom):
-                print '-> -> ' + nom
-                final_noms.append(nom.encode('ascii', 'ignore'))
-        final_dict[k] = final_noms
+    for award, noms in verified_noms.iteritems():
+        print award
+        for nom in noms:
+            print '-> -> ' + nom
 
-    print lol_counter
-    return final_dict
+    return verified_noms

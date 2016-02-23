@@ -18,7 +18,7 @@ def loadParsedTweets(filename):
     except (MemoryError, ValueError):
         with open(filename) as fl:
             tweets = [json.loads(line)["text"] for line in fl]
-    parsedTweets = [nltk.wordpunct_tokenize(tweet) for tweet in tweets]    
+    parsedTweets = [nltk.wordpunct_tokenize(tweet) for tweet in tweets]
     for tweet in parsedTweets:
         for token in tweet:
             if token in stopwords:
@@ -38,9 +38,9 @@ def loadParsedTweets(filename):
 ## github version
 def lookthroughTweets(keywords, year):
     if str(year) == '2015':
-        filename = 'gg/gg2015.json'
+        filename = 'gg2015.json'
     else:
-        filename = 'gg/gg2013.json'
+        filename = 'gg2013.json'
     parsedTweets = loadParsedTweets(filename)
     fTweets = [tweet for tweet in parsedTweets if any(x in tweet for x in keywords)]
     #print fTweets
@@ -89,7 +89,7 @@ def getNames(worddict,namedict,num):
             for name in sorted(tnames, key=tnames.get, reverse=True):
                 if word in name:
                     if tnames[name] + twords[word] > counter:
-                        
+
                         counter = tnames[name] + twords[word]
                         dispName = name
         finalnames[dispName] = counter

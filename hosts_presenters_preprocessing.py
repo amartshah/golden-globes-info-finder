@@ -32,9 +32,9 @@ def loadParsedTweets(filename):
 
 def lookthroughTweets(keywords, year):
     if str(year) == '2015':
-        filename = 'gg/gg2015.json'
+        filename = 'gg2015.json'
     else:
-        filename = 'gg/gg2013.json'
+        filename = 'gg2013.json'
     parsedTweets = loadParsedTweets(filename)
     fTweets = [tweet for tweet in parsedTweets if any(x in tweet for x in keywords)]
     #print fTweets

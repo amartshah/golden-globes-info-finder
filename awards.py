@@ -5,17 +5,15 @@ import collections
 
 AWARDS_THRESH = 3
 
-def similars_lists():
-    return [
-        ['tv', 'series'],
-        ['musical or comedy', 'musical', 'comedy'],
-    ]
 
 def delete_duplicate_names(awards):
     awards = sorted(awards, key=lambda tup: tup[1])
     final_awards = []
     # there can't be more than one award that contains the words from all the same sets
-    similars_lists = similars_lists()
+    similars_lists = [
+        ['tv', 'series'],
+        ['musical or comedy', 'musical', 'comedy']
+    ]
     # unless there are differences in presence or absence of these words
     differentiators = [
         'actress',
@@ -60,7 +58,8 @@ def award_names(year):
 
     awards = []
     for tweet in tweets_i_care_about(year):
-        tweet_pieces = re.compile('[^\s\w-]').split(tweet['text'].replace('#',''))
+        tweet_text = tweet['text'].encode('ascii', 'ignore')
+        tweet_pieces = re.compile('[^\s\w-]').split(tweet_text.replace('#',''))
         award_tweets = [x.lower() for x in tweet_pieces if 'wins best' in x or 'won best' in x]
         for award_piece in award_tweets:
             award_name = 'best ' + best_re.split(award_piece)[-1].rstrip()
@@ -71,5 +70,6 @@ def award_names(year):
     fake_awards = ['best', 'best dressed', 'best speech', 'best act', 'best actor', 'best actress']
     awardCounter = collections.Counter(awards).iteritems()
     ret = [[k,v] for k, v in awardCounter if v > thresh and k not in fake_awards]
-    ret = delete_duplicate_names(ret)
+    # ret = delete_duplicate_names(ret)
+    ret = [k for k, v in ret.iteritems()]
     return ret
