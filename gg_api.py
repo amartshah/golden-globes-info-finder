@@ -67,8 +67,6 @@ def pre_ceremony():
     # Add in stuff that should be here as needed
     print "Populating database..."
     pop_if_not_populated()
-    # pop_collection_2k13()
-    # pop_collection_2k15()
     print "Pre-ceremony processing complete."
     return
 
@@ -78,7 +76,7 @@ def main():
     and then run gg_api.main(). This is the second thing the TA will
     run when grading. Do NOT change the name of this function or
     what it returns.'''
-    pre_ceremony() 
+    pre_ceremony()
 
     while True:
         yr = None
@@ -90,11 +88,11 @@ def main():
             print "From which year do you want info?"
             yr = raw_input('Year: ')
 
-        while not inp_letter in ['a', 'b', 'c', 'd', 'e', 'f']:
+        while not inp_letter in ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']:
             if inp_letter != None:
                 print "The character you entered was not understood - "
             print "What information do you want? (enter letter)"
-            print "a) hosts\nb) awards\nc) nominees\nd) winners\ne) presenters \nf) funny people\n"
+            print "a) hosts\nb) awards\nc) nominees\nd) winners\ne) presenters \nf) funny people\ng) Red carpet\nh) Music Acts\n"
             inp_letter = raw_input('Letter: ')
 
         print "\nWorking...\n"
@@ -111,6 +109,10 @@ def main():
             print get_presenters(yr)
         elif inp_letter == 'f':
             print get_humor(yr)
+        elif inp_letter == 'g':
+            print redCarpet(yr)
+        elif inp_letter == 'h':
+            print musicActs(yr)
 
         print "====================================="
 
