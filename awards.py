@@ -71,5 +71,5 @@ def award_names(year):
     awardCounter = collections.Counter(awards).iteritems()
     ret = [[k,v] for k, v in awardCounter if v > thresh and k not in fake_awards]
     # ret = delete_duplicate_names(ret)
-    ret = [k for k, v in ret.iteritems()]
+    ret = [k for k, v in ret]
     return ret
